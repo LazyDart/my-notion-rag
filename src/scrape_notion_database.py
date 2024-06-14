@@ -1,19 +1,6 @@
 import requests
 import json
 
-# load json "../secrets.json"
-with open("./secrets.json") as f:
-    secrets = json.load(f)
-    NOTION_TOKEN = secrets["notion_secret"]
-    databases = secrets["databases"]
-
-header = headers = {
-    "Authorization": "Bearer " + NOTION_TOKEN,
-    "Content-Type": "application/json",
-    "Notion-Version": "2022-06-28",
-}
-
-notes_id = databases[1]["id"]
 
 def get_db_pages(database_id, header, num_pages=None):
     
@@ -41,7 +28,37 @@ def get_db_pages(database_id, header, num_pages=None):
 
     return results
 
-notes = get_db_pages(notes_id, header)
 
-with open('db.json', 'w', encoding='utf8') as f:
-    json.dump(notes, f, ensure_ascii=False, indent=4)
+if __name__ == "__main__":
+
+    # load json "../secrets.json"
+    with open("./secrets.json") as f:
+        secrets = json.load(f)
+        NOTION_TOKEN = secrets["notion_secret"]
+        databases = secrets["databases"]
+
+    header = headers = {
+        "Authorization": "Bearer " + NOTION_TOKEN,
+        "Content-Type": "application/json",
+        "Notion-Version": "2022-06-28",
+    }
+
+
+    notes = get_db_pages(databases[1]["id"], header)
+
+    with open('./data/notes.json', 'w', encoding='utf8') as f:
+        json.dump(notes, f, ensure_ascii=False, indent=4)
+
+    projects = get_db_pages(databases[2]["id"], header)
+
+    with open('./data/projects.json', 'w', encoding='utf8') as f:
+        json.dump(projects, f, ensure_ascii=False, indent=4)
+
+    areas = get_db_pages(databases[3]["id"], header)
+
+    with open('./data/areas.json', 'w', encoding='utf8') as f:
+        json.dump(areas, f, ensure_ascii=False, indent=4)
+
+
+
+    print("Scraping Notion database...")
