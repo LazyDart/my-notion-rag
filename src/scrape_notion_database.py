@@ -43,6 +43,7 @@ if __name__ == "__main__":
         "Notion-Version": "2022-06-28",
     }
 
+    print("Scraping Notion database...")
 
     notes = get_db_pages(databases[1]["id"], header)
 
@@ -58,7 +59,3 @@ if __name__ == "__main__":
 
     with open('./data/areas.json', 'w', encoding='utf8') as f:
         json.dump(areas, f, ensure_ascii=False, indent=4)
-
-
-
-    print("Scraping Notion database...")
